@@ -40,7 +40,7 @@
                     },
                 },
             },
-        },     
+        }   
     </script>
     <link rel="stylesheet" href="style.css"/>
 </head>
@@ -58,6 +58,35 @@
                    [INITIALIZE MONITOR]
         </button>
     </div>
+
+    <div id="monitor" class="hidden flex-col h-screen p-3 gap-2">
+        <div id="topbar"
+            class="flex justify-between items-center border-b border-green-border pb-2 text-[0.65rem] text-green-muted flex-wrap gap-2 shrink-0">
+            <span class="text-green text-[0.8rem] tracking-wildest">⬛ CEBERUS SECURITY v4.1.2</span>
+            <span class="flex items-centergap-1">
+                <span id="status-dot"
+                    class="inline-block w-2 h-2 rounded-full bg-green animate-pdot"></span>
+                <span id="status-txt"ALL SYSTEMS NOMINAL</span>
+            </span>
+            <span id="clock" class="text-green">03:00:00</span>
+        </div>
+
+        </div id="cam-grid"
+            class= "grid grid-cols-2 flex-1 min-h-0">
+        </div>
+
+        <div id="log"
+            class="border border-green-border px-3 py-2 h-20 ocerflow-y-auto
+                   text-[0.6rem] text-green-muted leading-7 shrink-0 scrollbar=none">
+        </div>
+    </div>
+
+    <div id="rpt"
+        class="hidden fixked inset-0 bg-black/95 z-[1000] flex-col
+               items-center justify-center gap-5 p-8">
+        <div class="text-red text-base "
+    
+            </div>
 </body>
 
 </html>
