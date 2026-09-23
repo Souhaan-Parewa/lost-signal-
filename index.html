@@ -29,15 +29,35 @@
                         blink: { '50%': {opacity: '0' }},
                         pdot: {'0%,100%': {opacity: '1'}, '50%': {opacity: '0.25'}},
                         glich: {
-                            '0%': {transform: 'translate(0,0)'},
+                            '0%' : {transform: 'translate(0,0)'},
                             '20%': {transform: 'translate(-3px,2px)'},
-                            
-                            
-                        }
-                    }
-                }
-            }
-        }           
+                            '40%': {transform: 'translate(3px,-2px)'},
+                            '60%': {transform: 'translate(-2px,3px)'},
+                            '80%': {transform: 'translate(2px,-1px)'},
+                            '100%':{transform: 'translate(0,0)'},
+                        },
+                        rb: {'50%':{ bordercolor: 'transparent' }},
+                    },
+                },
+            },
+        },     
     </script>
+    <link rel="stylesheet" href="style.css"/>
+</head>
+
+<body class="bg-bg text-green font-mono overflow-hidden h-screen relative">
+
+    <div id="boot" class="flex flex-col items-center justify-center h-screen p-8">
+        <pre id="boot-text"
+            class="whitespace-pre text-[clamp(0.55rem,1.4vw,0.8rem)] leading-7 max-w-x1 w-full">
+        </pre>
+        <button id="start-btn"
+            class="hidden mt-8 bg-transparent border border-green text-green font-mono
+                   text-sm px-8 py-2 cursor-pointer tracking-wildest
+                   hover:bg-green hover:text-bg transition-colors duration-150">
+                   [INITIALIZE MONITOR]
+        </button>
+    </div>
+</body>
 
 </html>
