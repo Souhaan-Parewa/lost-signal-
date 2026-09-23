@@ -84,7 +84,24 @@
     <div id="rpt"
         class="hidden fixked inset-0 bg-black/95 z-[1000] flex-col
                items-center justify-center gap-5 p-8">
-        <div class="text-red text-base "
+        <div class="text-red text-base tracking-[0.3em] text-center">⚠ ANOMALY DETECTED</div>
+        <pre id="rpt-body"
+            class="text-green text-[0.68rem] leading-8 text-center max-w-sm whitespace-pre=wrap">
+        </pre>
+        <div class="flex gap-4 flex-wrap justify-center">
+            <button id="btn-dismiss"
+                class="bg-transparent border border-green text-green font-mono
+                       text-[0.7rem] px-5 py-1.5 cursor-pointer tracking-wildest
+                       hover:bg-green hover:text-bg transition-colors">
+             DISMISS 
+            </button>
+            <button id="btn-report"
+                class="bg-transparent border border-red text-red font-mono
+                       text-[0.7rem] px-5 py-1.5 cursor-pointer tracking-wildest
+                       hover:bg-red hover:text-bg transition-colors">"
+                FILE REPORT
+        </div>
+        </div>
     
             </div>
 </body>
