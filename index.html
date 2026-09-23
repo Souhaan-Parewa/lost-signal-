@@ -82,7 +82,7 @@
     </div>
 
     <div id="rpt"
-        class="hidden fixked inset-0 bg-black/95 z-[1000] flex-col
+        class="hidden fixed inset-0 bg-black/95 z-[1000] flex-col
                items-center justify-center gap-5 p-8">
         <div class="text-red text-base tracking-[0.3em] text-center">⚠ ANOMALY DETECTED</div>
         <pre id="rpt-body"
@@ -100,10 +100,43 @@
                        text-[0.7rem] px-5 py-1.5 cursor-pointer tracking-wildest
                        hover:bg-red hover:text-bg transition-colors">"
                 FILE REPORT
+            </button>
         </div>
-        </div>
+    </div>
     
-            </div>
+    <div id="js-overlay"
+        class="hidden fixed inset-0 z-[8000] bg-black flex-col
+               items-center justify-center gap-4">
+        <div id="js-face"
+            class="text-red leading-none animate-glich
+                   [text-shadow:0_0_40px_#ff2200,0_0_80px_ff220088]
+                   text-[clamp(3rem,15vw,9rem)]">
+        </div>
+        <div id="js-msg"
+            class="text-white tracking-wildest text-center animate-glich
+                   text-[clamp(0.5rem,2vw,0.9rem)]">
+        </div>
+    </div>
+
+    <div id="static-ov" class="hidden fixed inset-0 z-[7000] pointer-events-none">
+        <canvas id="static-cv" class="w-full h-full"></canvas>
+    </div>
+
+    <div id="red-flash"
+        class="hidden fixed inset-0 z-[6000] bg-red opacity-20 pointer-events-none">
+    </div>
+
+    <div id="final"
+        class="hidden fixed inset-0 bg-black z-[9500] flex-col
+               items-center justify-center p-8 overflow-y-auto">
+        <pre id="final-txt"
+            class="text-red text-[clamp(0.55rem, 1.6vw, 0.82erem)]
+                   leading-8 text-center max-w-lg whitespace-pre-wrap">
+        </pre>
+    </div>
+    
+    <script src="game.js"></script>
+
 </body>
 
 </html>
