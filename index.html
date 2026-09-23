@@ -10,6 +10,34 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet" />
 
-    <script></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colours: {
+                        green: '#00cc33',
+                        'green-dim': '#004a10',
+                        'green-muted': '#005512',
+                        'greem-border': '#1a2e1a',
+                        red: '#ff2200', 
+                        bg: '#050505',
+                    },
+                    fontfamily: {
+                        mono: ['"Share Tech Mono"', '"Courier New"', 'monospace'],
+                    },
+                    animation: {
+                        blink: { '50%': {opacity: '0' }},
+                        pdot: {'0%,100%': {opacity: '1'}, '50%': {opacity: '0.25'}},
+                        glich: {
+                            '0%': {transform: 'translate(0,0)'},
+                            '20%': {transform: 'translate(-3px,2px)'},
+                            
+                            
+                        }
+                    }
+                }
+            }
+        }           
+    </script>
 
 </html>
