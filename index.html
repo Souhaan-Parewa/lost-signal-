@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-</head>
+<head>
     <meta charset="UTF-8" />
-    <meta name="veiwpoint" content="width=device-width, initial-scale=1, veiwpoint-fit=cover" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>SIGNAL LOST</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -14,29 +14,35 @@
         tailwind.config = {
             theme: {
                 extend: {
-                    colours: {
+                    colors: {
                         green: '#00cc33',
                         'green-dim': '#004a10',
                         'green-muted': '#005512',
-                        'greem-border': '#1a2e1a',
+                        'green-border': '#1a2e1a',
                         red: '#ff2200', 
                         bg: '#050505',
                     },
-                    fontfamily: {
+                    fontFamily: {
                         mono: ['"Share Tech Mono"', '"Courier New"', 'monospace'],
                     },
                     animation: {
-                        blink: { '50%': {opacity: '0' }},
-                        pdot: {'0%,100%': {opacity: '1'}, '50%': {opacity: '0.25'}},
-                        glich: {
-                            '0%' : {transform: 'translate(0,0)'},
+                        blink: 'blink 1s step-end infinite',
+                        pdot: 'pdot 2s ease-in-out infinite',
+                        glitch: 'glitch 0.08s step-end infinite',
+                        rb: 'rb 0.25s step-end infinite',
+                    },
+                    keyframes: {
+                        blink: {'50%': {opacity: '0'}},
+                        pdot: {'0%,100%': {opacity: '1'}, '50%': {opacity: '0.25'} },
+                        glitch: {
+                            '0%': {transform: 'translate(0,0)'},
                             '20%': {transform: 'translate(-3px,2px)'},
                             '40%': {transform: 'translate(3px,-2px)'},
                             '60%': {transform: 'translate(-2px,3px)'},
                             '80%': {transform: 'translate(2px,-1px)'},
-                            '100%':{transform: 'translate(0,0)'},
-                        },
-                        rb: {'50%':{ bordercolor: 'transparent' }},
+                            '100%': {transform: 'translate(0,0)'},
+                            },
+                        rb: {'50%':{ borderColor: 'transparent' }},
                     },
                 },
             },
@@ -49,11 +55,11 @@
 
     <div id="boot" class="flex flex-col items-center justify-center h-screen p-8">
         <pre id="boot-text"
-            class="whitespace-pre text-[clamp(0.55rem,1.4vw,0.8rem)] leading-7 max-w-x1 w-full">
+            class="whitespace-pre text-[clamp(0.55rem,1.4vw,0.8rem)] leading-7 max-w-xl w-full">
         </pre>
         <button id="start-btn"
             class="hidden mt-8 bg-transparent border border-green text-green font-mono
-                   text-sm px-8 py-2 cursor-pointer tracking-wildest
+                   text-sm px-8 py-2 cursor-pointer tracking-widest
                    hover:bg-green hover:text-bg transition-colors duration-150">
                    [INITIALIZE MONITOR]
         </button>
@@ -62,22 +68,22 @@
     <div id="monitor" class="hidden flex-col h-screen p-3 gap-2">
         <div id="topbar"
             class="flex justify-between items-center border-b border-green-border pb-2 text-[0.65rem] text-green-muted flex-wrap gap-2 shrink-0">
-            <span class="text-green text-[0.8rem] tracking-wildest">⬛ CEBERUS SECURITY v4.1.2</span>
-            <span class="flex items-centergap-1">
+            <span class="text-green text-[0.8rem] tracking-widest">⬛ CERBERUS SECURITY v4.1.2</span>
+            <span class="flex items-center gap-1">
                 <span id="status-dot"
                     class="inline-block w-2 h-2 rounded-full bg-green animate-pdot"></span>
-                <span id="status-txt"ALL SYSTEMS NOMINAL</span>
+                <span id="status-txt">ALL SYSTEMS NOMINAL</span>
             </span>
             <span id="clock" class="text-green">03:00:00</span>
         </div>
 
-        </div id="cam-grid"
-            class= "grid grid-cols-2 flex-1 min-h-0">
+        <div id="cam-grid"
+            class= "grid grid-cols-2 gap-2 flex-1 min-h-0">
         </div>
 
         <div id="log"
-            class="border border-green-border px-3 py-2 h-20 ocerflow-y-auto
-                   text-[0.6rem] text-green-muted leading-7 shrink-0 scrollbar=none">
+            class="border border-green-border px-3 py-2 h-20 overflow-y-auto
+                   text-[0.6rem] text-green-muted leading-7 shrink-0 scrollbar-none">
         </div>
     </div>
 
@@ -86,19 +92,19 @@
                items-center justify-center gap-5 p-8">
         <div class="text-red text-base tracking-[0.3em] text-center">⚠ ANOMALY DETECTED</div>
         <pre id="rpt-body"
-            class="text-green text-[0.68rem] leading-8 text-center max-w-sm whitespace-pre=wrap">
+            class="text-green text-[0.68rem] leading-8 text-center max-w-sm whitespace-pre-wrap">
         </pre>
         <div class="flex gap-4 flex-wrap justify-center">
             <button id="btn-dismiss"
                 class="bg-transparent border border-green text-green font-mono
-                       text-[0.7rem] px-5 py-1.5 cursor-pointer tracking-wildest
+                       text-[0.7rem] px-5 py-1.5 cursor-pointer tracking-widest
                        hover:bg-green hover:text-bg transition-colors">
              DISMISS 
             </button>
             <button id="btn-report"
                 class="bg-transparent border border-red text-red font-mono
-                       text-[0.7rem] px-5 py-1.5 cursor-pointer tracking-wildest
-                       hover:bg-red hover:text-bg transition-colors">"
+                       text-[0.7rem] px-5 py-1.5 cursor-pointer tracking-widest
+                       hover:bg-red hover:text-bg transition-colors">
                 FILE REPORT
             </button>
         </div>
@@ -108,12 +114,12 @@
         class="hidden fixed inset-0 z-[8000] bg-black flex-col
                items-center justify-center gap-4">
         <div id="js-face"
-            class="text-red leading-none animate-glich
-                   [text-shadow:0_0_40px_#ff2200,0_0_80px_ff220088]
+            class="text-red leading-none animate-glitch
+                   [text-shadow:0_0_40px_#ff2200,0_0_80px_#ff220088]
                    text-[clamp(3rem,15vw,9rem)]">
         </div>
         <div id="js-msg"
-            class="text-white tracking-wildest text-center animate-glich
+            class="text-white tracking-widest text-center animate-glitch
                    text-[clamp(0.5rem,2vw,0.9rem)]">
         </div>
     </div>
@@ -130,7 +136,7 @@
         class="hidden fixed inset-0 bg-black z-[9500] flex-col
                items-center justify-center p-8 overflow-y-auto">
         <pre id="final-txt"
-            class="text-red text-[clamp(0.55rem, 1.6vw, 0.82erem)]
+            class="text-red text-[clamp(0.55rem, 1.6vw, 0.82rem)]
                    leading-8 text-center max-w-lg whitespace-pre-wrap">
         </pre>
     </div>
