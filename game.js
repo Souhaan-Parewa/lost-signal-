@@ -147,6 +147,74 @@ const CAMERAS={
         anomalyNote: 'SERVERS RACK-B: OFFLINE.\nTemp spike: +19.7°C in under 4 minutes.\nAll logs from 02:00-03:00 deleted.\n\n"Someone was here before you."',
 
     },
-    
 
+    c4:{
+        label: 'CAM-04 // PARKING'
+        normal: [
+            '  ___    ___    ___ ',
+            ' |CAR|  |   |  |   |',
+            ' |___|  |___|  |___|',
+            '                     ',
+            '════════════════════ ',
+            '    PARKING LOT      ',
+        ],
+
+        anomaly: [
+        '  ___    ___    ___ ',
+        ' |CAR|  |   |  |   |',
+        ' |___|  |___|  |___|',
+        '         |||         ',
+        '═════════|||════════ ',
+        '    PARKING LOT      ',
+        ],
+        
+        scareFace: [
+            '                     ',
+            '  IT IS AT THE DOOR  ',
+            '                     ',
+            '  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓  ',
+            '  ▓  SIGNAL LOST  ▓  ',
+            '  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓  ',
+        ],
+
+        scareMsg:'THE FRONT DOOR IS OPENING',
+        anomalyNote:'UNIDENTIFIED ENTITY IN PARKING LOT.\nDid not arrive by vehicle.\nIs facing the entrance.\n\n"Do not let it see the light inside."',
+    },
+
+};
+
+const ORDER = ['c3', 'c1', 'c2', 'c4'];
+
+const STATE = {
+    phase: 0,
+    curAnomaly: null,
+    reports: 0,
+    dead: false,
+    jsActive: false,
+    gmin: 0,
+    gsec: 0,
+};
+
+const $ = id => document.getElementById(id);
+
+const DOM = {
+    boot: $('boot'),
+    bootText: $('boot-text'),
+    startBtn: $('start-btn'),
+    monitor: $('monitor'),
+    camGrid: $('cam-grid'),
+    log: $('log'),
+    clock: $('clock'),
+    statusTxt: $('status-txt'),
+    statusDot: $('status-dot'),
+    rpt: $('rpt'),
+    rptBody: $('rpt-body'),
+    jsOverlay: $('js-overlay'),
+    jsFace: $('js-face'),jsMsg
+    jsMsg: $('js-msg'),
+    staticOv: $('static-ov'),
+    stativCv: $('stativ-cv'),
+    redFlash: $('red-flash'),
+    final: $('final'),
+    finalTxt: $('final-txt'),    
 }
