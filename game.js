@@ -217,4 +217,36 @@ const DOM = {
     redFlash: $('red-flash'),
     final: $('final'),
     finalTxt: $('final-txt'),    
+};
+
+const FEEDS = {};
+
+function ftime(){
+    const h= String(3+Math.floor(STATE.gMin/60)).padStart(2, '0');
+    const m= String(STATE.gMin%60).padStart(2, '0');
+    const s= String(STATE.gSec%60).padStart(2, '0');
+    return'${h}:${m}:${s}';
 }
+
+setInterval(() => {
+    if (STATE.dead) return;
+    STATE.gSec++;
+    if (STATE.gSec%10===0) STATE.gMin++;
+    DOM.clock.textContent= ftime();
+    Object.keys(CAMERAS).forEach(id=> {
+        const el= $('ts-${id}');
+        if (el) el.textContent= ftime();
+    });
+    
+}, 1000);
+
+function log(msg, cls= ''){
+    const d= document.createElement('div');
+    d.className= 'le'+ (cls ? ' '+ cls:'');
+    d.textContent= '[${ftime()}] ${msg}';
+    DOM.log.appendChild(d);
+    DOM.log.scrollTop= DOM.log.scrollHeight;
+}
+
+function show(el) {el.classList.remove('hidden'); el.classList.add('flex');}
+function hide(el) {el.classlist.remove('flex'); el.classList.add('hidden');}
