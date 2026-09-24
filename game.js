@@ -213,7 +213,7 @@ const DOM = {
     jsFace: $('js-face'),jsMsg
     jsMsg: $('js-msg'),
     staticOv: $('static-ov'),
-    stativCv: $('stativ-cv'),
+    staticCv: $('static-cv'),
     redFlash: $('red-flash'),
     final: $('final'),
     finalTxt: $('final-txt'),    
@@ -250,3 +250,37 @@ function log(msg, cls= ''){
 
 function show(el) {el.classList.remove('hidden'); el.classList.add('flex');}
 function hide(el) {el.classlist.remove('flex'); el.classList.add('hidden');}
+
+let staticRAF= null;
+function startStatic(){
+    DOM.stativOv.classList.remove('hidden');
+    const ctx= DOM.Cv.getContext('2d');
+    function draw(){
+        DOM.staticCv.width= window.innerWidth;
+        DOM.staticCv.height= window.innerHeight;
+        const img= ctx.createImageData(DOM.staticCv.width, DOM.staticCv.height);
+        for (let i= 0; i< img.data.length; i+= 4){
+            const v= Math.random()* 255 | 0;
+            img.data[i]= 0;
+            img.data[i+ 1]= (v*0.6) | 0;
+            img.data[i+ 2]= 0;
+            img.data[i+ 3]= 180;
+        }
+        ctx.putImageData(img, 0, 0);
+        staticRAF= requestAnimationFrame(draw);
+    }
+    draw();
+}
+
+function stopStatic(){
+    DOM.staticOv.classList.add('hidden');
+    if(staticRAF){cancelAnimationFrame(staticRAF); staticRAF= null;}
+}
+
+function flashRed(times= 4, speed= 70){
+    let i=0;
+    const iv= setInterval(()=>{
+        DOM.redFlash.classList.toggle('hidden');
+        if (++i >= times*2) {DOM.redFlash.classList.add('hidden'); clearInterval(iv);}
+    }, speed);
+}
