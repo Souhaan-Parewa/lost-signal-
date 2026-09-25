@@ -344,7 +344,7 @@ function fullScreenScare(face, msg, dur= 1200){
     DOM.jsMsg.textContent= msg;
     show(DOM.jsOverlay);
     setTimeout(() => {
-        hide(DOM.js;Overlay);
+        hide(DOM.js.Overlay);
         stopStatic();
         STATE.jsActive= false;
     }, dur);
@@ -362,5 +362,63 @@ function triggerAnomaly(id){
     flashRed(3, 80);
     DOM.statusTxt.textContent= `⚠ ANOMALY — ${CAMERAS[id].label}`;
     DOM.statusTxt.style.color= '#ff2200';
-    log(`MOTION / ANOMALY on ${CAMERAS[id].label}`)
+    log(`MOTION / ANOMALY on ${CAMERAS[id].label} — CLICK TO INVESTIGATE`, 'c');
+
+    setTimeout(() => {
+        if (STATE.curAnomaly=== id){
+            feedScare(id, 700);
+            noise(0.15, 0.08);
+        }
+    }, 4000+ Math.random()* 3000);
 }
+
+function clearAnomaly(id){
+    FEEDS[id].classList.remove('red-alert');
+    $(`s-${id}`).textContent= CAMERAS[id].normal.join('\n');
+    $(`s-${id}`).style.color= '';
+    DOM.statusTxt.textContent= 'ALL SYSTEMS NOMINAL';
+    DOM.statusTxt.style.color='';
+}
+
+function onFeedClick(id){
+    if (STATE.dead || STATE.jsActive) return;
+    initAudio();
+
+    if(id=== STATE.curAnomaly){
+        showReport(id);
+    } else if (STATE.curAnomaly){
+        feedScare(id, 600);
+        noise(0.1, 0.06);
+        playBeep();
+        log('Focus — wrong camera.', 'w');
+    }
+}
+
+function showReport(id){
+    DOM.rptBody.textContent= CAMERAS[id].anomalyNote;
+    show(DOM.rpt);
+    playDrone();
+}
+
+$('btn-dismiss').addEventListener('click', () => {
+    hide(DOM.rpt);
+    if (STATE.dead) return;
+    log('Anomaly dismissed.', 'w');
+    const dismissed= STATE.curAnomaly;
+    clearAnomaly(dismissed);
+    STATE.curAnomaly= null;
+    state.phase++;
+
+    setTimeout(() => {
+        if (!STATE.dead){
+            fullScreenScare(
+                CAMERAS[dismissed].scareFace.join('\n'),
+                CAMERAS[dismissed].scareMsg,
+                1500
+            );
+            log('!! YOU SHOULD NOT HAVE DISMISSED THAT !!', 'c');
+            if(STATE.phase >= ORDER.length) setTimeout(beginFinal, 3000);
+            else setTimeout(() => triggerAnomaly(ORDER[STATE.phase]), 6000);
+        }
+    }, timeout);
+})
