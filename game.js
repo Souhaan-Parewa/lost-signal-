@@ -490,5 +490,51 @@ const FINAL_LINES= [
     '',
     '',
     '[ SIGNAL LOST ]',
+    '[ CONNECTION TERMINATED BY REMOTE HOST ]',
+    '',
+    '// the previous operator is still loged in //',
+];
+
+function currupt(str){
+    const chars= '░▒▓█▄▀■□▪◘◙'.split('');
+    return str.split('').map(ch =>
+        Math.random() <0.35 ? chars[Math.random()* chars.length | 0] : ch
+    ).join('');
+}
+
+function typeFinal(i){
+    if(i >= FINAL_LINES.length) return;
+    DOM.finalTxt.textContent += FINAL_LINES[i] + '\n';
+    const pause= FINAL_LINES[i].startsWith('>') ? 700
+               : FINAL_LINES[i].startsWith('.') ? 600
+               : 100;
+    setTimeout(() => tyreFinal(i + 1), pause);
+}
+
+function beginFinal(){
+    STATE.dead= true;
+
+    fullScreenScare('◉____◉\n ___\n \\___/', 'IT IS INSIDE', 2000);
+    setTimeout(startStatic, 200);
+    setTimeout(stopStatic, 2200);
+
+    Object.keys(CAMERAS).forEach(id => {
+        const s= $(`s-${id}`);
+        s.textContent= currupt(CAMERAS[id].anomaly.join('\n'));
+        s.style.color=' #ff2200';
+    });
+
+    log('SIGNAL LOST', 'c');
+
+    setTimeout(() => {
+      show(DOM.final);
+      typeFinal(0);  
+    }, 2500);
+}
+
+const BOOT_LINES= [
+    'CERBERUS SECURITY SYSTEMS v4.1.2',
+    '____________________________________',
+    'Mounting camera arrays.............  [OK]',
     
-    ]
+]
