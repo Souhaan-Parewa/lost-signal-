@@ -420,5 +420,75 @@ $('btn-dismiss').addEventListener('click', () => {
             if(STATE.phase >= ORDER.length) setTimeout(beginFinal, 3000);
             else setTimeout(() => triggerAnomaly(ORDER[STATE.phase]), 6000);
         }
-    }, timeout);
-})
+    }, 3000);
+});
+
+$('btn-report').addEventListener('click', () =>{
+    hide(DOM.rpt);
+    if (STATE.dead) return;
+    STATE.reports++;
+    log(`Incident #${STATE.reports} filled for ${CAMERAS[STATE.curAnomaly].label}.`);
+    clearAnomaly(STATE.curAnomaly);
+    STATE.curAnomaly= null;
+    STATE.phase++;
+
+    if (STATE.phase >= ORDER.length){
+        setTimeout(beginFinal, 4000);
+    } else{
+        setTimeout(() => playHeartbeat(), 500);
+        setTimeout(() => triggerAnomaly(ORDER[STATE.phase]), 9000+ Math.random()* 4000);
+    }
+});
+
+function startRandomEvents(){
+    setInterval(() =>{
+        if(STATE.dead || STATE.curAnomaly || STATE.jsActive) return;
+        const r= Math.random();
+
+        if (r<0.12){
+            const ids= Object.keys(CAMERAS);
+            feedScare(ids[Math.random()* ids.length | 0], 350);
+            noise(0.08, 0.04);
+        } else if (r< 0.18){
+            flashRed(2, 60);
+            noise(0.08, 0.05);
+            log(`— interface detected — `, 'w');
+        } else if (r<0.22){
+            playHeartbeat();
+        }
+    }, 7000);
+}
+
+const FINAL_LINES= [
+    '> UPLOADING INCIDENT REPORTS...',
+    '',
+    '████████████░░░░ 78%',
+    '',
+    '> ERROR: REMOTE HOST REFUSED CONNECTION',
+    '',
+    '> REVIEWING FOOTAGE ARCHIEVE...',
+    '',
+    '> CAM-04 04:11:08 — entity has entered the building.', 
+    '> CAM-04 04:11:34 — ascending stairwell. floor 2.',
+    '> CAM-04 04:11:41 — Floor 3.',
+    '> CAM-04 04:11:55 — lobby camera: no signal.',
+    '',
+    '. . .',
+    '',
+    '',
+    '> CHECKING OPERATOR FEED...',
+    '',
+    '> CAM-03 // SERVER ROOM LIVE',
+    '',
+    ' you are in cam-03',
+    ' you have been in frame this entire time.',
+    '',
+    ' it has been watching you',
+    ' the same way you have been watching it.',
+    '',
+    ' why did you keep the lights on?',
+    '',
+    '',
+    '[ SIGNAL LOST ]',
+    
+    ]
