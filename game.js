@@ -284,3 +284,48 @@ function flashRed(times= 4, speed= 70){
         if (++i >= times*2) {DOM.redFlash.classList.add('hidden'); clearInterval(iv);}
     }, speed);
 }
+
+function attachNoise(feedEl){
+    const cv= feedEl.querySelector('noise-cv');
+    const ctx= cv.getContext('2d');
+    function draw(){
+        cv.width= feedEl.offsetWidth || 200;
+        cv.height= feedEl.offsetHeight || 150;
+        const img= ctx.createImageData(cv.width, cv.height);
+        for (let i=0; i<img.data.length; i+= 4){
+            const v= Math.random()* 60 | 0;
+            img.data[i]= 0;
+            img.data[i+ 1]= v;
+            img.data[i+ 2]= 0;
+            img.data[i+ 3]= 255;
+        }
+        ctx.putImageData(img, 0, 0);
+        requestAnimationFrame(draw);
+    }
+    draw();
+}
+
+function buildGrid(){
+    Object.entries(CAMERAS).forEach(([id, cam]) => {
+        const div= document.createElement('div');
+        div.className= 'feed';
+        div.id= id;
+        div.innerHTML= `
+            <div class= "f-label">${cam.label}</div>
+            <span class="f-rec">REC</span>
+            <canvas class="noise-cv"></canvas>
+            <div class="f-scene"><pre id="s-${id}"></pre></div>
+            <div class="f-scare" id="js=${id}"><pre></pre></div>
+            <div class="f-ts" id="ts-${id}">03:00:00</div>
+        `;
+        DOM.camGrid.appendChild(div);
+        FEEDS[id]= div;
+        attachNoise(div);
+        $(`s-${id}`).textContent= cam.normal.join('\n');
+        div.addEventListener('click', () => onFeedClick(id));
+    });
+}
+
+function feedScare(id, dur= 900){
+    const js= $(`js-${id}`);
+}
