@@ -536,5 +536,52 @@ const BOOT_LINES= [
     'CERBERUS SECURITY SYSTEMS v4.1.2',
     '____________________________________',
     'Mounting camera arrays.............  [OK]',
-    
-]
+    'Loading anomaly detection...........  [OK]',
+    'Establishing feed at SITE-07........  [OK]',
+    'Checking operator handoff log.......  [OK]',
+    '',
+    'HANDOFF NOTE FROM PREVIOUS OPERATOR:',
+    '',
+    '  "Something kept appearing on CAM-04.',
+    '   I filed three reports. Nothing came.',
+    '   I dismissed the fourth one.',
+    '   Do not dismiss anything."',
+    '',
+    ' — END OD LOG (operator did not sign out)',
+    '',
+    '// NIGHT SHIFT: 03:00 — 07:00 //',
+    '// SITE-07 OCCUPANCY; 0 SCHEDULED //',
+    '',
+];
+
+let bi= 0;
+function typeBoot(){
+    if (bi >= BOOT_LINES.length){
+        DOM.startBtn.classList.remove('hidden');
+        return;
+    }
+    DOM.boot.textContent += BOOT_LINES[bi] + '\n';
+    bi++;
+
+    const delay = bi < 4 ? 55: bi< 9 ? 70: 110;
+    setTimeout(typeBoot, delay);
+}
+
+typeBoot();
+
+DOM.startBtn.addEventListener('click', () => {
+    initAudio();
+    playBeep();
+    hide(DOM.boot);
+    show(DOM.monitor);
+    buildGrid();
+    startGame();
+});
+
+function startGame() {
+    log('Night shift initialized. You are the only operator on duty.');
+    log('4 feeds active. Site is empty — no personnel scheduled.');
+    setTimeout(() => log('Reviewing previous shift notes...'),
+    setTimeout(() => log('"Do not dismiss anything." — prev. operator', 'w'),
+    setTimeout(() =>
+}
