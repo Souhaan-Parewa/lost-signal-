@@ -27,14 +27,14 @@ function noise(dur= 0.3, vol= 0.25){
     const data= buf.getChannelData(0);
     for (let i=0; i<data.length; i++)
         data[i]= (Math.random()*2-1)*vol;
-    const src= AC.createBuffersource();
+    const src= AC.createBufferSource();
     src.buffer= buf;
     src.connect(AC.destination);
     src.start();
 }
 
 function playBeep(){tone(880, 0.08, 'square', 0.04)}
-function playwarn(){tone(440, 0.2, 'sawtooth', 0.09); tone(330, 0.2 'sawtooth', 0.07, 0.28);}
+function playWarn(){tone(440, 0.2, 'sawtooth', 0.09); tone(330, 0.2, 'sawtooth', 0.07, 0.28);}
 function playDrone(){ [55, 110, 165].forEach((f, i) => tone(f, 5, 'sine', 0.05-i*0.01, i*0.1));}
 function playHeartbeat(){tone(80, 0.05, 'sine', 0.2); tone(70, 0.05, 'sine', 0.15, 0.12)}
 
@@ -149,7 +149,7 @@ const CAMERAS={
     },
 
     c4:{
-        label: 'CAM-04 // PARKING'
+        label: 'CAM-04 // PARKING',
         normal: [
             '  ___    ___    ___ ',
             ' |CAR|  |   |  |   |',
@@ -210,7 +210,7 @@ const DOM = {
     rpt: $('rpt'),
     rptBody: $('rpt-body'),
     jsOverlay: $('js-overlay'),
-    jsFace: $('js-face'),jsMsg
+    jsFace: $('js-face'),
     jsMsg: $('js-msg'),
     staticOv: $('static-ov'),
     staticCv: $('static-cv'),
@@ -225,7 +225,7 @@ function ftime(){
     const h= String(3+Math.floor(STATE.gMin/60)).padStart(2, '0');
     const m= String(STATE.gMin%60).padStart(2, '0');
     const s= String(STATE.gSec%60).padStart(2, '0');
-    return'${h}:${m}:${s}';
+    return`${h}:${m}:${s}`;
 }
 
 setInterval(() => {
@@ -234,7 +234,7 @@ setInterval(() => {
     if (STATE.gSec%10===0) STATE.gMin++;
     DOM.clock.textContent= ftime();
     Object.keys(CAMERAS).forEach(id=> {
-        const el= $('ts-${id}');
+        const el= $(`ts-${id}`);
         if (el) el.textContent= ftime();
     });
     
@@ -243,18 +243,18 @@ setInterval(() => {
 function log(msg, cls= ''){
     const d= document.createElement('div');
     d.className= 'le'+ (cls ? ' '+ cls:'');
-    d.textContent= '[${ftime()}] ${msg}';
+    d.textContent= `[${ftime()}] ${msg}`;
     DOM.log.appendChild(d);
     DOM.log.scrollTop= DOM.log.scrollHeight;
 }
 
 function show(el) {el.classList.remove('hidden'); el.classList.add('flex');}
-function hide(el) {el.classlist.remove('flex'); el.classList.add('hidden');}
+function hide(el) {el.classList.remove('flex'); el.classList.add('hidden');}
 
 let staticRAF= null;
 function startStatic(){
-    DOM.stativOv.classList.remove('hidden');
-    const ctx= DOM.Cv.getContext('2d');
+    DOM.staticOv.classList.remove('hidden');
+    const ctx= DOM.staticCv.getContext('2d');
     function draw(){
         DOM.staticCv.width= window.innerWidth;
         DOM.staticCv.height= window.innerHeight;
@@ -286,7 +286,7 @@ function flashRed(times= 4, speed= 70){
 }
 
 function attachNoise(feedEl){
-    const cv= feedEl.querySelector('noise-cv');
+    const cv= feedEl.querySelector('.noise-cv');
     const ctx= cv.getContext('2d');
     function draw(){
         cv.width= feedEl.offsetWidth || 200;
@@ -315,7 +315,7 @@ function buildGrid(){
             <span class="f-rec">REC</span>
             <canvas class="noise-cv"></canvas>
             <div class="f-scene"><pre id="s-${id}"></pre></div>
-            <div class="f-scare" id="js=${id}"><pre></pre></div>
+            <div class="f-scare" id="js-${id}"><pre></pre></div>
             <div class="f-ts" id="ts-${id}">03:00:00</div>
         `;
         DOM.camGrid.appendChild(div);
@@ -334,7 +334,7 @@ function feedScare(id, dur= 900){
     setTimeout(() => js.classList.remove('show'), dur);
 }
 
-function fullScreenScare(face, msg, dur= 1200){
+function fullscreenScare(face, msg, dur= 1200){
     if(STATE.jsActive) return;
     STATE.jsActive= true;
     playScreech();
@@ -344,7 +344,7 @@ function fullScreenScare(face, msg, dur= 1200){
     DOM.jsMsg.textContent= msg;
     show(DOM.jsOverlay);
     setTimeout(() => {
-        hide(DOM.js.Overlay);
+        hide(DOM.jsOverlay);
         stopStatic();
         STATE.jsActive= false;
     }, dur);
@@ -358,7 +358,7 @@ function triggerAnomaly(id){
     $(`s-${id}`).textContent= CAMERAS[id].anomaly.join('\n');
     $(`s-${id}`).style.color= '#ff440022';
 
-    playwarn();
+    playWarn();
     flashRed(3, 80);
     DOM.statusTxt.textContent= `⚠ ANOMALY — ${CAMERAS[id].label}`;
     DOM.statusTxt.style.color= '#ff2200';
@@ -407,11 +407,11 @@ $('btn-dismiss').addEventListener('click', () => {
     const dismissed= STATE.curAnomaly;
     clearAnomaly(dismissed);
     STATE.curAnomaly= null;
-    state.phase++;
+    STATE.phase++;
 
     setTimeout(() => {
         if (!STATE.dead){
-            fullScreenScare(
+            fullscreenScare(
                 CAMERAS[dismissed].scareFace.join('\n'),
                 CAMERAS[dismissed].scareMsg,
                 1500
@@ -427,7 +427,7 @@ $('btn-report').addEventListener('click', () =>{
     hide(DOM.rpt);
     if (STATE.dead) return;
     STATE.reports++;
-    log(`Incident #${STATE.reports} filled for ${CAMERAS[STATE.curAnomaly].label}.`);
+    log(`Incident #${STATE.reports} filed for ${CAMERAS[STATE.curAnomaly].label}.`);
     clearAnomaly(STATE.curAnomaly);
     STATE.curAnomaly= null;
     STATE.phase++;
@@ -452,7 +452,7 @@ function startRandomEvents(){
         } else if (r< 0.18){
             flashRed(2, 60);
             noise(0.08, 0.05);
-            log(`— interface detected — `, 'w');
+            log(`— interference detected — `, 'w');
         } else if (r<0.22){
             playHeartbeat();
         }
@@ -466,12 +466,12 @@ const FINAL_LINES= [
     '',
     '> ERROR: REMOTE HOST REFUSED CONNECTION',
     '',
-    '> REVIEWING FOOTAGE ARCHIEVE...',
+    '> REVIEWING FOOTAGE ARCHIVE...',
     '',
     '> CAM-04 04:11:08 — entity has entered the building.', 
-    '> CAM-04 04:11:34 — ascending stairwell. floor 2.',
-    '> CAM-04 04:11:41 — Floor 3.',
-    '> CAM-04 04:11:55 — lobby camera: no signal.',
+    '> CAM-02 04:11:34 — ascending stairwell. floor 2.',
+    '> CAM-02 04:11:41 — Floor 3.',
+    '> CAM-01 04:11:55 — lobby camera: no signal.',
     '',
     '. . .',
     '',
@@ -492,10 +492,10 @@ const FINAL_LINES= [
     '[ SIGNAL LOST ]',
     '[ CONNECTION TERMINATED BY REMOTE HOST ]',
     '',
-    '// the previous operator is still loged in //',
+    '// the previous operator is still logged in //',
 ];
 
-function currupt(str){
+function corrupt(str){
     const chars= '░▒▓█▄▀■□▪◘◙'.split('');
     return str.split('').map(ch =>
         Math.random() <0.35 ? chars[Math.random()* chars.length | 0] : ch
@@ -508,20 +508,20 @@ function typeFinal(i){
     const pause= FINAL_LINES[i].startsWith('>') ? 700
                : FINAL_LINES[i].startsWith('.') ? 600
                : 100;
-    setTimeout(() => tyreFinal(i + 1), pause);
+    setTimeout(() => typeFinal(i + 1), pause);
 }
 
 function beginFinal(){
     STATE.dead= true;
 
-    fullScreenScare('◉____◉\n ___\n \\___/', 'IT IS INSIDE', 2000);
+    fullscreenScare('◉____◉\n ___\n \\___/', 'IT IS INSIDE', 2000);
     setTimeout(startStatic, 200);
     setTimeout(stopStatic, 2200);
 
     Object.keys(CAMERAS).forEach(id => {
         const s= $(`s-${id}`);
-        s.textContent= currupt(CAMERAS[id].anomaly.join('\n'));
-        s.style.color=' #ff2200';
+        s.textContent= corrupt(CAMERAS[id].anomaly.join('\n'));
+        s.style.color='#ff2200';
     });
 
     log('SIGNAL LOST', 'c');
@@ -547,10 +547,10 @@ const BOOT_LINES= [
     '   I dismissed the fourth one.',
     '   Do not dismiss anything."',
     '',
-    ' — END OD LOG (operator did not sign out)',
+    ' — END OF LOG (operator did not sign out)',
     '',
     '// NIGHT SHIFT: 03:00 — 07:00 //',
-    '// SITE-07 OCCUPANCY; 0 SCHEDULED //',
+    '// SITE-07 OCCUPANCY: 0 SCHEDULED //',
     '',
 ];
 
@@ -560,7 +560,7 @@ function typeBoot(){
         DOM.startBtn.classList.remove('hidden');
         return;
     }
-    DOM.boot.textContent += BOOT_LINES[bi] + '\n';
+    DOM.bootText.textContent += BOOT_LINES[bi] + '\n';
     bi++;
 
     const delay = bi < 4 ? 55: bi< 9 ? 70: 110;
@@ -581,7 +581,9 @@ DOM.startBtn.addEventListener('click', () => {
 function startGame() {
     log('Night shift initialized. You are the only operator on duty.');
     log('4 feeds active. Site is empty — no personnel scheduled.');
-    setTimeout(() => log('Reviewing previous shift notes...'),
-    setTimeout(() => log('"Do not dismiss anything." — prev. operator', 'w'),
-    setTimeout(() =>
+    setTimeout(() => log('Reviewing previous shift notes...'), 2500);
+    setTimeout(() => log('"Do not dismiss anything." — prev. operator', 'w'), 4500);
+    setTimeout(() => log('Previous operator did not clock out.', 'c'), 7000);
+    setTimeout(() => triggerAnomaly(ORDER[STATE.phase]), 14000);
+    startRandomEvents();
 }
