@@ -328,4 +328,39 @@ function buildGrid(){
 
 function feedScare(id, dur= 900){
     const js= $(`js-${id}`);
+    const pre= js.querySelector('pre');
+    pre.textContent= CAMERAS[id].scareFace.join('\n');
+    js.classList.add('show');
+    setTimeout(() => js.classList.remove('show'), dur);
+}
+
+function fullScreenScare(face, msg, dur= 1200){
+    if(STATE.jsActive) return;
+    STATE.jsActive= true;
+    playScreech();
+    startStatic();
+    flashRed(6, 60);
+    DOM.jsFace.textContent= face;
+    DOM.jsMsg.textContent= msg;
+    show(DOM.jsOverlay);
+    setTimeout(() => {
+        hide(DOM.js;Overlay);
+        stopStatic();
+        STATE.jsActive= false;
+    }, dur);
+}
+
+function triggerAnomaly(id){
+    if(STATE.dead) return;
+    STATE.curAnomaly= id;
+
+    FEEDS[id].classList.add('red-alert');
+    $(`s-${id}`).textContent= CAMERAS[id].anomaly.join('\n');
+    $(`s-${id}`).style.color= '#ff440022';
+
+    playwarn();
+    flashRed(3, 80);
+    DOM.statusTxt.textContent= `⚠ ANOMALY — ${CAMERAS[id].label}`;
+    DOM.statusTxt.style.color= '#ff2200';
+    log(`MOTION / ANOMALY on ${CAMERAS[id].label}`)
 }
