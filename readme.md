@@ -1,4 +1,5 @@
 #  SIGNAL LOST
+<img width="2559" height="1325" alt="Screenshot 2026-09-26 111213" src="https://github.com/user-attachments/assets/6f12eeb6-dd0e-4a39-8597-1fb81c9b74ef" />
 
 ## about it
 
