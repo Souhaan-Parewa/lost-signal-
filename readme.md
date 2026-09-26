@@ -1,7 +1,5 @@
 #  SIGNAL LOST
 
-<br>
-
 ## about it
 
 you are the night shift operartor for CERBERUS SECURITY at Site-07. you see an anomaly on CAM-04 and try to further find about it.
